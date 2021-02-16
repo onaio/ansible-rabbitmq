@@ -41,7 +41,7 @@ rabbitmq_vhosts_queues:
     password:
     durable: 'true'
 
-##   Requares additional plugin enabled: rabbitmq_shovel
+##   Requires additional plugin enabled: rabbitmq_shovel
 ##   See https://www.rabbitmq.com/shovel-dynamic.html for json format
 rabbitmq_shovels:
   -
@@ -50,3 +50,8 @@ rabbitmq_shovels:
   -
     shovel_name:
     shovel_json: ''
+
+
+#rabbitmq_distribution: xenial
+rabbitmq_erlang_version: erlang #latest
+rabbitmq_version: main #latest

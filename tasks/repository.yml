@@ -7,14 +7,19 @@
     url: https://github.com/rabbitmq/signing-keys/releases/download/2.0/rabbitmq-release-signing-key.asc
     state: present
 
+- name: Fail if distribution is not specified
+  fail:
+    msg: "Debian or Ubuntu Distribution not specified"
+  when: rabbitmq_distribution is not defined
+
 - name: add erlang apt repository
   apt_repository:
-    repo: "deb https://dl.bintray.com/rabbitmq-erlang/debian bionic erlang"
+    repo: "deb https://dl.bintray.com/rabbitmq-erlang/debian {{rabbitmq_distribution}} {{rabbitmq_erlang_version}}"
     update_cache: yes
     state: present
 
 - name: add rabbitmq server apt repository
   apt_repository:
-    repo: "deb https://dl.bintray.com/rabbitmq/debian bionic main"
+    repo: "deb https://dl.bintray.com/rabbitmq/debian {{rabbitmq_distribution}} {{rabbitmq_version}}"
     update_cache: yes
     state: present
