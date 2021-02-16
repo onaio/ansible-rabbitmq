@@ -1,14 +1,39 @@
 ---
-# Install required packages
-
-- name: install required packages
+- name: Install apt https package
   apt:
-    update_cache: yes
-    force: yes
-    pkg: "{{ item }}"
+    name:
+      - apt-transport-https
+    update_cache: true
     state: present
-  with_items:
-    - rabbitmq-server
+
+- name: Install erlang required packages
+  apt:
+    name:
+      - erlang-base
+      - erlang-asn1
+      - erlang-crypto
+      - erlang-eldap
+      - erlang-ftp
+      - erlang-inets
+      - erlang-mnesia
+      - erlang-os-mon
+      - erlang-parsetools
+      - erlang-public-key
+      - erlang-runtime-tools
+      - erlang-snmp
+      - erlang-ssl
+      - erlang-syntax-tools
+      - erlang-tftp
+      - erlang-tools
+      - erlang-xmerl
+    update_cache: true
+    state: present
+
+- name: Install RabbitMq Server
+  apt:
+    name:
+      - rabbitmq-server
+    state: latest
 
 - name: customize logrotate rules
   template:

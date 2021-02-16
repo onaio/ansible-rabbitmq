@@ -1,15 +1,20 @@
 ---
 # Setup installation repositories
-# Standart repository for Debian / Ubuntu (http://www.rabbitmq.com/install-debian.html)
+# Standard repository for Debian / Ubuntu (http://www.rabbitmq.com/install-debian.html)
 
 - name: import repository key
   apt_key:
-    url: https://www.rabbitmq.com/rabbitmq-release-signing-key.asc
+    url: https://github.com/rabbitmq/signing-keys/releases/download/2.0/rabbitmq-release-signing-key.asc
     state: present
 
-- name: add apt repository
+- name: add erlang apt repository
   apt_repository:
-    repo: "deb http://www.rabbitmq.com/debian/ testing main"
+    repo: "deb https://dl.bintray.com/rabbitmq-erlang/debian bionic erlang"
     update_cache: yes
     state: present
 
+- name: add rabbitmq server apt repository
+  apt_repository:
+    repo: "deb https://dl.bintray.com/rabbitmq/debian bionic main"
+    update_cache: yes
+    state: present
