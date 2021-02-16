@@ -8,32 +8,15 @@
 
 - name: Install erlang required packages
   apt:
-    name:
-      - erlang-base
-      - erlang-asn1
-      - erlang-crypto
-      - erlang-eldap
-      - erlang-ftp
-      - erlang-inets
-      - erlang-mnesia
-      - erlang-os-mon
-      - erlang-parsetools
-      - erlang-public-key
-      - erlang-runtime-tools
-      - erlang-snmp
-      - erlang-ssl
-      - erlang-syntax-tools
-      - erlang-tftp
-      - erlang-tools
-      - erlang-xmerl
+    name: "{{ item }}={{ rabbitmq_erlang_version }}"
     update_cache: true
     state: present
+  with_items: "{{ rabbitmq_required_erlang_packages }}"
 
 - name: Install RabbitMq Server
   apt:
-    name:
-      - rabbitmq-server
-    state: latest
+    name: "rabbitmq-server={{ rabbitmq_server_version }}"
+    state: present
 
 - name: customize logrotate rules
   template:
