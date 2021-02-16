@@ -33,7 +33,7 @@
   apt:
     name:
       - rabbitmq-server
-    state: latest
+    state: present
 
 - name: customize logrotate rules
   template:
