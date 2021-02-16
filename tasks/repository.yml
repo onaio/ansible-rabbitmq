@@ -14,7 +14,7 @@
 
 - name: add erlang apt repository
   apt_repository:
-    repo: "deb https://dl.bintray.com/rabbitmq-erlang/debian {{rabbitmq_distribution}} {{rabbitmq_erlang_version}}"
+    repo: "deb https://dl.bintray.com/rabbitmq-erlang/debian {{rabbitmq_distribution}} {{rabbitmq_erlang_component_version}}"
     update_cache: yes
     state: present
 
