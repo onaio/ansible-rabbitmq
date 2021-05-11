@@ -53,7 +53,12 @@ rabbitmq_shovels:
 
 
 #rabbitmq_distribution: xenial
-rabbitmq_erlang_component_version: erlang-23.x #latest
+rabbitmq_old_erlang_deb_url: https://dl.bintray.com/rabbitmq-erlang/debian
+rabbitmq_old_rabbitmq_deb_url: https://dl.bintray.com/rabbitmq/debian
+rabbitmq_new_erlang_deb_url: http://ppa.launchpad.net/rabbitmq/rabbitmq-erlang/ubuntu
+rabbitmq_new_rabbitmq_deb_url: https://packagecloud.io/rabbitmq/rabbitmq-server/ubuntu/
+rabbitmq_old_erlang_component_version: erlang-23.x
+rabbitmq_erlang_component_version: main #latest
 rabbitmq_version: main #latest
 rabbitmq_server_version: 3.8.11-1
 rabbitmq_erlang_version: 1:23.*
