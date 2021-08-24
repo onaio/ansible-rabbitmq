@@ -33,6 +33,7 @@
     prefix: /usr/lib/rabbitmq
     state: enabled
     new_only: yes
+    broker_state: "{{ (rabbitmq_create_cluster) | ternary('online','offline') }}"
   with_items: "{{ rabbitmq_plugins }}"
   notify:
     restart rabbitmq-server
