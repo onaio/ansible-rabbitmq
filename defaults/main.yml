@@ -52,7 +52,6 @@ rabbitmq_shovels:
     shovel_json: ''
 
 
-#rabbitmq_distribution: xenial
 rabbitmq_old_erlang_deb_url: https://dl.bintray.com/rabbitmq-erlang/debian
 rabbitmq_old_rabbitmq_deb_url: https://dl.bintray.com/rabbitmq/debian
 rabbitmq_new_erlang_deb_url: http://ppa.launchpad.net/rabbitmq/rabbitmq-erlang/ubuntu
