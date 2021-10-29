@@ -13,6 +13,19 @@
     url: https://packagecloud.io/rabbitmq/rabbitmq-server/gpgkey
     state: present
 
+- name: install lsb_release
+  apt:
+    name: lsb-release
+    state: present
+
+- name: get distribution code name
+  shell: $(which lsb_release) -cs
+  register: distribution_code_name
+
+- name: Set rabbitmq_distribution variable
+  set_fact:
+    rabbitmq_distribution: "{{ distribution_code_name.stdout }}"
+
 - name: Fail if distribution is not specified
   fail:
     msg: "Debian or Ubuntu Distribution not specified"
