@@ -1,21 +1,17 @@
 ---
-- name: Install apt https package
-  apt:
-    name:
-      - apt-transport-https
-    update_cache: true
+- name: Ensure erlang is installed
+  package:
+    name: erlang
     state: present
 
-- name: Install erlang required packages
-  apt:
-    name: "{{ item }}={{ rabbitmq_erlang_version }}"
-    update_cache: true
-    state: present
-  with_items: "{{ rabbitmq_required_erlang_packages }}"
+- name: Download RabbitMQ debian package
+  get_url:
+    url: "{{ rabbitmq_deb_download_url }}"
+    dest: "{{ rabbitmq_deb_download_path }}"
 
-- name: Install RabbitMq Server
+- name: Install RabbitMQ package
   apt:
-    name: "rabbitmq-server={{ rabbitmq_server_version }}"
+    deb: "{{ rabbitmq_deb_download_path }}"
     state: present
 
 - name: customize logrotate rules

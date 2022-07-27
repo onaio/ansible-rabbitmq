@@ -1,8 +1,4 @@
 ---
-
-- include: repository.yml
-  tags: repository
-
 - include: packages.yml
   tags: packages
 
