@@ -51,7 +51,6 @@ rabbitmq_shovels:
     shovel_name:
     shovel_json: ''
 
-rabbitmq_version: main #latest
-rabbitmq_server_version: 3.8.11-1
-rabbitmq_deb_download_path: "/tmp/rabbitmq-server_{{ rabbitmq_version }}_all.deb"
-rabbitmq_deb_download_url: "https://packagecloud.io/rabbitmq/rabbitmq-server/packages/{{ ansible_distribution | lower }}/{{ ansible_distribution_release }}/rabbitmq-server_{{ rabbitmq_version }}_all.deb/download"
+rabbitmq_server_version: 3.8.11
+rabbitmq_deb_download_path: "/tmp/rabbitmq-server_{{ rabbitmq_server_version }}_all.deb"
+rabbitmq_deb_download_url: "https://packagecloud.io/rabbitmq/rabbitmq-server/packages/{{ ansible_distribution | lower }}/{{ ansible_distribution_release }}/rabbitmq-server_{{ rabbitmq_server_version }}-1_all.deb/download"
