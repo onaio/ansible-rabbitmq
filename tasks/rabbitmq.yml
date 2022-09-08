@@ -2,9 +2,11 @@
 # RabbitMQ user and vhost management
 - name: Get full node name
   shell: echo "$(rabbitmqctl eval "node().")" | sed  "s/'//g"
+  changed_when: false
   register: node_name
 
-- set_fact:
+- name: Set RabbitMQ node name fact
+  set_fact:
     rabbitmq_node_name={{ node_name.stdout }}
 
 - name: Ensure the users is removed
@@ -25,32 +27,41 @@
     user: "{{ item.user }}"
     password: "{{ item.password }}"
     node: "{{ rabbitmq_node_name }}"
-    configure_priv: "{{ item.configure_priv|default('.*') }}"
-    read_priv: "{{ item.read_priv|default('.*') }}"
-    write_priv: "{{ item.write_priv|default('.*') }}"
-    vhost: "{{ item.vhost|default('/') }}"
-    permissions: "{{ item.permissions|default(omit) }}"
-    tags: "{{ item.tags|default('') }}"
+    configure_priv: "{{ item.configure_priv | default('.*') }}"
+    read_priv: "{{ item.read_priv | default('.*') }}"
+    write_priv: "{{ item.write_priv | default('.*') }}"
+    vhost: "{{ item.vhost | default('/') }}"
+    permissions: "{{ item.permissions | default(omit) }}"
+    tags: "{{ item.tags | default('') }}"
   with_items: "{{ rabbitmq_users }}"
   no_log: true
-  tags: [configuration,rabbitmq]
+  tags: [configuration, rabbitmq]
 
 - name: Ensure rabbitmqadmin script is present
   copy:
     src: rabbitmqadmin
     dest: /usr/local/bin
     mode: 0755
-  when: "{{ rabbitmq_instant_queues }}"
+  when: rabbitmq_instant_queues
 
 - name: Ensure requared queues are present
-  shell: rabbitmqadmin --username={{ item.0.user }} --password={{ item.0.password }} --vhost={{ item.0.vhost_name }} declare queue name={{ item.1 }} durable={{ item.0.durable }}
+  rabbitmq_queue:
+    name: "{{ item.1 }}"
+    login_user: "{{ item.0.user }}"
+    login_password: "{{ item.0.password }}"
+    vhost: "{{ item.0.vhost_name }}"
+    durable: "{{ item.0.durable }}"
+    state: present
   with_subelements:
     - "{{ rabbitmq_vhosts_queues }}"
     - queues
   when: rabbitmq_instant_queues
 
 - name: Make a shovle for for queues
-  shell: rabbitmqctl set_parameter shovel {{ item.shovel_name }} '{{ item.shovel_json }}'
+  rabbitmq_parameter:
+    component: shovel
+    name: "{{ item.shovel_name }}"
+    value: "{{ item.shovel_json }}"
   with_items:
     - "{{ rabbitmq_shovels }}"
   when: rabbitmq_instant_shovels

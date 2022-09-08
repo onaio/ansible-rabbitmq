@@ -1,28 +1,68 @@
 ---
-- name: Install apt https package
+- name: Ensure package required to add repository are present
   apt:
     name:
+      - software-properties-common
       - apt-transport-https
-    update_cache: true
+      - lsb-release
+      - curl
+      - gnupg
     state: present
+    update_cache: yes
 
-- name: Install erlang required packages
+- name: Ensure "man" directory exists
+  file:
+    path: /usr/share/man/man1
+    state: directory
+    recurse: true
+
+- name: Add erlang solutions repository
+  get_url:
+    url: https://packages.erlang-solutions.com/erlang-solutions_2.0_all.deb
+    dest: /tmp/erlang-solutions_2.0_all.deb
+    mode: "777"
+  when: ansible_distribution_version is version("22.04", "<")
+
+- name: Ensure erlang solutions repository is added
   apt:
-    name: "{{ item }}={{ rabbitmq_erlang_version }}"
-    update_cache: true
+    deb: "/tmp/erlang-solutions_2.0_all.deb"
     state: present
-  with_items: "{{ rabbitmq_required_erlang_packages }}"
+  when: ansible_distribution_version is version("22.04", "<")
 
-- name: Install RabbitMq Server
+- name: Update cache
   apt:
-    name: "rabbitmq-server={{ rabbitmq_server_version }}"
+    update_cache: yes
+
+- name: Ensure erlang is installed
+  apt:
+    name: erlang
     state: present
 
-- name: customize logrotate rules
+- name: Download RabbitMQ package.
+  get_url:
+    url: "{{ rabbitmq_deb_url }}"
+    dest: "/tmp/{{ rabbitmq_deb }}"
+    mode: "777"
+
+- name: Ensure RabbitMQ is installed.
+  apt:
+    deb: "/tmp/{{ rabbitmq_deb }}"
+    state: present
+
+- name: Update cache
+  apt:
+    update_cache: yes
+
+- name: Install RabbitMQ package
+  apt:
+    name: "rabbitmq-server"
+    state: present
+
+- name: Customize logrotate rules
   template:
     src: etc/logrotate.d/rabbitmq-server.j2
     dest: /etc/logrotate.d/rabbitmq-server
     owner: root
     group: root
     mode: 0644
-  tags: ['rabbitmq', 'rabbitmq-logrotate']
+  tags: ["rabbitmq", "rabbitmq-logrotate"]
