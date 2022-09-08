@@ -1,7 +1,7 @@
 ---
 - name: Ensure erlang is installed
   package:
-    name: erlang
+    name: "{{ erlang_packages }}"
     state: present
 
 - name: Download RabbitMQ debian package
