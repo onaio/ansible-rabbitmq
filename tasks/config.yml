@@ -28,7 +28,7 @@
     state: link
 
 - name: Enable the plugins is installed
-  rabbitmq_plugin:
+  community.rabbitmq.rabbitmq_plugin:
     names: "{{ item }}"
     prefix: /usr/lib/rabbitmq
     state: enabled
