@@ -1,21 +1,16 @@
 ---
 galaxy_info:
+  role_name: rabbitmq
+  namespace: onaio
   author: Alexey Medvedchikov
-  description: An ansible role for RabbitMQ cluster
+  description: Fork of alexey-medvedchikov/ansible-rabbitmq; Updated for Ubuntu 18.04, 20.04 and 22.04
   company: 2GIS, LLC
   license: LGPL
-  min_ansible_version: 1.3
+  min_ansible_version: "1.3"
   platforms:
   - name: Ubuntu
     versions:
-    - precise
-    - raring
-    - saucy
-    - trusty
-  - name: Debian
-    versions:
-    - squeeze
-    - wheezy
-  categories:
-  - clustering
+      - bionic
+      - focal
+      - jammy
 dependencies: []
