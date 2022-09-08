@@ -1,7 +1,7 @@
 ---
 # Configure RabbitMQ
 
-- name: rabbitmq default file
+- name: Set rabbitmq default file
   template:
     src: etc/default/rabbitmq-server.j2
     dest: /etc/default/rabbitmq-server
@@ -9,9 +9,9 @@
     group: root
     mode: 0644
   notify:
-    restart rabbitmq-server
+    Restart rabbitmq-server
 
-- name: default settings for RabbitMQ AMQP server
+- name: Set default settings for RabbitMQ AMQP server
   template:
     src: etc/rabbitmq/rabbitmq-env.conf.j2
     dest: /etc/rabbitmq/rabbitmq-env.conf
@@ -19,7 +19,7 @@
     group: root
     mode: 0644
   notify:
-    restart rabbitmq-server
+    Restart rabbitmq-server
 
 - name: Symlink RabbitMQ bin to sbin(for install plugins)
   file:
@@ -33,7 +33,7 @@
     prefix: /usr/lib/rabbitmq
     state: enabled
     new_only: yes
-    broker_state: "{{ (rabbitmq_create_cluster) | ternary('online','offline') }}"
+    broker_state: "{{ (rabbitmq_create_cluster) | ternary('online', 'offline') }}"
   with_items: "{{ rabbitmq_plugins }}"
   notify:
-    restart rabbitmq-server
+    Restart rabbitmq-server

@@ -10,7 +10,7 @@
     state: present
     update_cache: yes
 
-- name: Ensure 'man' directory exists
+- name: Ensure "man" directory exists
   file:
     path: /usr/share/man/man1
     state: directory
@@ -20,6 +20,7 @@
   get_url:
     url: https://packages.erlang-solutions.com/erlang-solutions_2.0_all.deb
     dest: /tmp/erlang-solutions_2.0_all.deb
+    mode: "777"
   when: ansible_distribution_version is version("22.04", "<")
 
 - name: Ensure erlang solutions repository is added
@@ -33,7 +34,7 @@
     update_cache: yes
 
 - name: Ensure erlang is installed
-  package:
+  apt:
     name: erlang
     state: present
 
@@ -41,6 +42,7 @@
   get_url:
     url: "{{ rabbitmq_deb_url }}"
     dest: "/tmp/{{ rabbitmq_deb }}"
+    mode: "777"
 
 - name: Ensure RabbitMQ is installed.
   apt:
@@ -56,11 +58,11 @@
     name: "rabbitmq-server"
     state: present
 
-- name: customize logrotate rules
+- name: Customize logrotate rules
   template:
     src: etc/logrotate.d/rabbitmq-server.j2
     dest: /etc/logrotate.d/rabbitmq-server
     owner: root
     group: root
     mode: 0644
-  tags: ['rabbitmq', 'rabbitmq-logrotate']
+  tags: ["rabbitmq", "rabbitmq-logrotate"]

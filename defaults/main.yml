@@ -2,7 +2,7 @@
 rabbitmq_erlang_cookie: 1qa2ws3ed
 rabbitmq_ulimit_open_files: 1024
 rabbitmq_memory_high_watermark: 0.4
-rabbitmq_create_cluster: no
+rabbitmq_create_cluster: false
 rabbitmq_cluster_master: localhost
 rabbitmq_vhosts: []
 rabbitmq_use_longname: 'false'
@@ -49,15 +49,6 @@ rabbitmq_shovels:
   -
     shovel_name:
     shovel_json: ''
-
-rabbitmq_server_version: 3.8.11
-rabbitmq_deb_download_path: "/tmp/rabbitmq-server_{{ rabbitmq_server_version }}_all.deb"
-rabbitmq_deb_download_url: "https://packagecloud.io/rabbitmq/rabbitmq-server/packages/{{ ansible_distribution | lower }}/{{ ansible_distribution_release }}/rabbitmq-server_{{ rabbitmq_server_version }}-1_all.deb/download"
-erlang_packages:
-  - erlang
-  - erlang-base
-  - erlang-base-hipe
-  - esl-erlang
 
 rabbitmq_version: "3.10.7"
 rabbitmq_deb: "rabbitmq-server_{{ rabbitmq_version }}-1_all.deb"
