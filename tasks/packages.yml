@@ -1,17 +1,59 @@
 ---
+- name: Ensure package required to add repository are present
+  apt:
+    name:
+      - software-properties-common
+      - apt-transport-https
+      - lsb-release
+      - curl
+      - gnupg
+    state: present
+    update_cache: yes
+
+- name: Ensure 'man' directory exists
+  file:
+    path: /usr/share/man/man1
+    state: directory
+    recurse: true
+
+- name: Add erlang solutions repository
+  get_url:
+    url: https://packages.erlang-solutions.com/erlang-solutions_2.0_all.deb
+    dest: /tmp/erlang-solutions_2.0_all.deb
+  when: ansible_distribution_version is version("22.04", "<")
+
+- name: Ensure erlang solutions repository is added
+  apt:
+    deb: "/tmp/erlang-solutions_2.0_all.deb"
+    state: present
+  when: ansible_distribution_version is version("22.04", "<")
+
+- name: Update cache
+  apt:
+    update_cache: yes
+
 - name: Ensure erlang is installed
   package:
-    name: "{{ erlang_packages }}"
+    name: erlang
     state: present
 
-- name: Download RabbitMQ debian package
+- name: Download RabbitMQ package.
   get_url:
-    url: "{{ rabbitmq_deb_download_url }}"
-    dest: "{{ rabbitmq_deb_download_path }}"
+    url: "{{ rabbitmq_deb_url }}"
+    dest: "/tmp/{{ rabbitmq_deb }}"
+
+- name: Ensure RabbitMQ is installed.
+  apt:
+    deb: "/tmp/{{ rabbitmq_deb }}"
+    state: present
+
+- name: Update cache
+  apt:
+    update_cache: yes
 
 - name: Install RabbitMQ package
   apt:
-    deb: "{{ rabbitmq_deb_download_path }}"
+    name: "rabbitmq-server"
     state: present
 
 - name: customize logrotate rules
