@@ -1,22 +1,22 @@
 ---
 
-- include: repository.yml
+- include_tasks: repository.yml
   tags: repository
 
-- include: packages.yml
+- include_tasks: packages.yml
   tags: packages
 
-- include: config-cluster.yml
+- include_tasks: config-cluster.yml
   when: rabbitmq_create_cluster
 
-- include: config.yml
+- include_tasks: config.yml
 
-- include: service.yml
+- include_tasks: service.yml
 
-- include: cluster.yml
+- include_tasks: cluster.yml
   when: (rabbitmq_create_cluster == true) and ( ansible_fqdn != rabbitmq_cluster_master )
 
-- include: rabbitmq.yml
+- include_tasks: rabbitmq.yml
   when: 'not rabbitmq_create_cluster or (ansible_fqdn == rabbitmq_cluster_master)'
 
 - meta: flush_handlers
